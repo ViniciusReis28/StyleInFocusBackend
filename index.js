@@ -11,8 +11,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
-app.use('/users', usersRoutes);  // Usando as rotas de usuários
+app.use('/camisas', camisasRoutes);  
+app.use('/users', usersRoutes);  
 app.use('/frete', freteRoutes);
 app.use('/api/roupas', comentarioRouter);
 
