@@ -9,6 +9,11 @@ const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 const session = require('express-session');
 
+app.use(cors({
+    origin: 'https://styleinfocus.netlify.app',  // Permite requisições apenas desse domínio
+    methods: ['GET', 'POST'],  // Permite apenas métodos GET e POST
+    allowedHeaders: ['Content-Type'],  // Permite o cabeçalho Content-Type
+}));
 
 const app = express();
 app.use(bodyParser.json());
