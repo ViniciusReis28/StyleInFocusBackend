@@ -11,11 +11,13 @@ const session = require('express-session');
 const client = require('./config/database'); 
 const jwt = require('jsonwebtoken'); // Para criar o token JWT
 const User = require('./models/authModel'); // Modelo do banco de dados para o usuário
+const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-app.use('/auth', authRoutes);
+app.use('/api/auth', authRoutes); 
+
 app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
 app.use('/users', usersRoutes);  // Usando as rotas de usuários
 app.use('/frete', freteRoutes);
