@@ -19,7 +19,7 @@ const upload = multer({ storage: storage });
 
 // Rotas
 router.post('/register', upload.single('profile_image'), authController.register);
-router.get('/login', authController.login);
+router.post('/login', authController.login);
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/reset-password', authController.resetPassword);
 router.post('/update', upload.single('profile_image'), authController.update);
