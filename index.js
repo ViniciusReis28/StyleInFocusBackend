@@ -8,6 +8,9 @@ const comentarioRouter = require('./routes/comentarioRouter');
 const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 const session = require('express-session');
+const client = require('./config/database'); 
+const jwt = require('jsonwebtoken'); // Para criar o token JWT
+const User = require('./models/authModel'); // Modelo do banco de dados para o usuário
 
 const app = express();
 app.use(bodyParser.json());
