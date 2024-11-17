@@ -16,6 +16,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+router.get('/login', (req, res) => {
+    res.send('Rota de login está funcionando!');
+});
 
 // Rotas
 router.post('/register', upload.single('profile_image'), authController.register);
