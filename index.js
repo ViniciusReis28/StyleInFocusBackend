@@ -32,9 +32,51 @@ app.use(session({
 app.use('/uploads', express.static(path.join(__dirname, '/frontend/paginas/login/uploads')));
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// Rota padrão para a página inicial ou outras páginas
+// Endpoint de login
+app.post('/api/auth/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // Buscar o usuário no banco de dados
+        const query = 'SELECT * FROM users WHERE email = $1';
+        const values = [email];
+        const result = await client.query(query, values);
+
+        // Verifica se o usuário existe
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        const user = result.rows[0];
+
+        // Verificar se a senha fornecida é correta
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            return res.status(401).json({ error: 'Senha incorreta' });
+        }
+
+        // Gerar o token JWT
+        const token = jwt.sign(
+            { userId: user.id, email: user.email },
+            'secretaChave', // Sua chave secreta
+            { expiresIn: '1h' } // Expiração do token em 1 hora
+        );
+
+        // Retornar o token como resposta
+        res.status(200).json({ message: 'Usuário autenticado', token });
+    } catch (err) {
+        console.error('Erro ao processar o login:', err);
+        res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+});
+
+
+// Servir arquivos estáticos do frontend
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+// Rota padrão para a página inicial
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend/'));  // Redireciona para a página de login
+    res.sendFile(path.join(__dirname, 'frontend/login.html')); // Redireciona para login.html
 });
 // Usar as rotas de autenticação
 app.listen(3000, () => {
