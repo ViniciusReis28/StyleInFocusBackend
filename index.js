@@ -11,7 +11,7 @@ const session = require('express-session');
 
 const app = express();
 app.use(bodyParser.json());
-
+app.use(cors());
 app.use('/auth', authRoutes);
 app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
 app.use('/users', usersRoutes);  // Usando as rotas de usuários
