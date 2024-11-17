@@ -12,12 +12,6 @@ const session = require('express-session');
 const app = express();
 app.use(bodyParser.json());
 
-app.use(cors({
-    origin: 'https://styleinfocus.netlify.app', // Substitua pelo domínio do frontend
-    methods: ['POST', 'GET'], // Métodos permitidos
-    credentials: true // Permitir envio de cookies, se necessário
-}));app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/auth', authRoutes);
 app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
 app.use('/users', usersRoutes);  // Usando as rotas de usuários
