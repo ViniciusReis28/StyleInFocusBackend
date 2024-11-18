@@ -1,5 +1,5 @@
 const express = require('express');
-const authController = require('../controllers/authController');
+const { login } = require('../controllers/authController'); // Controle do login
 const router = express.Router();
 const pool = require('../config/database');
 const multer = require('multer');
@@ -19,7 +19,7 @@ const upload = multer({ storage: storage });
 
 // Rotas
 router.post('/register', upload.single('profile_image'), authController.register);
-router.post('/login', authController.login);
+router.post('/login', login);
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/reset-password', authController.resetPassword);
 router.post('/update', upload.single('profile_image'), authController.update);

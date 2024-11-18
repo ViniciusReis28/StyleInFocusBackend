@@ -15,14 +15,8 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 
-// Configuração CORS
-const corsOptions = {
-    origin: 'https://styleinfocus.netlify.app', // Ajuste para o domínio correto
-    methods: 'GET, POST, PUT, DELETE, OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization, Origin, X-Requested-With'
-};
+app.use(cors()); // Permitir todos os domínios para testes
 
-app.use(cors(corsOptions));  // Certifique-se de usar o CORS primeiro
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
