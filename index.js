@@ -17,7 +17,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/', authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
 app.use('/users', usersRoutes);  // Usando as rotas de usuários
 app.use('/frete', freteRoutes);
@@ -38,7 +38,7 @@ app.use('/uploads', express.static(path.join(__dirname, '/frontend/paginas/login
 app.use(express.static(path.join(__dirname, 'frontend')));
 
 
-app.post('/login', async (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
     console.log("Recebendo requisição POST /api/auth/login");  // Adicione o log aqui
     const { email, password } = req.body;
 
