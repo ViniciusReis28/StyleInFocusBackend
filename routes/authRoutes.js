@@ -1,5 +1,5 @@
 const express = require('express');
-const { login } = require('../controllers/authController'); // Controle do login
+const authController = require('../controllers/authController');
 const router = express.Router();
 const pool = require('../config/database');
 const multer = require('multer');
@@ -18,8 +18,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Rotas
-router.post('/login', login);
-
+router.post('/register', upload.single('profile_image'), authController.register);
+router.post('/login', authController.login);
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', authController.resetPassword);
+router.post('/update', upload.single('profile_image'), authController.update);
 
 router.get('/check-session', (req, res) => {
     if (req.session.userId) {

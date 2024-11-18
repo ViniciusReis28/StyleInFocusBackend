@@ -15,12 +15,7 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(bodyParser.json());
-const corsOptions = {
-    origin: 'https://seu-dominio-frontend.com', // ou '*', mas o mais seguro é especificar o domínio do seu frontend
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use('/api/auth', authRoutes);
 app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
@@ -41,6 +36,8 @@ app.use(session({
 // Configuração de arquivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, '/frontend/paginas/login/uploads')));
 app.use(express.static(path.join(__dirname, 'frontend')));
+
+
 app.post('/api/auth/login', async (req, res) => {
     console.log("Recebendo requisição POST /api/auth/login");  // Adicione o log aqui
     const { email, password } = req.body;
