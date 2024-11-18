@@ -15,9 +15,15 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
-app.use('/api/auth', authRoutes); 
+const corsOptions = {
+    origin: 'https://styleinfocus.netlify.app', // Substitua pelo seu domínio do frontend
+    methods: 'GET,POST',
+    allowedHeaders: 'Content-Type'
+};
 
+app.use(cors(corsOptions));
+
+app.use('/api/auth', authRoutes); 
 app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
 app.use('/users', usersRoutes);  // Usando as rotas de usuários
 app.use('/frete', freteRoutes);
