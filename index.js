@@ -15,9 +15,14 @@ const bcrypt = require('bcrypt');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+const corsOptions = {
+    origin: 'https://seu-dominio-frontend.com', // ou '*', mas o mais seguro é especificar o domínio do seu frontend
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
 
-app.use('/api/auth', authRoutes); 
+app.use('/api/auth', authRoutes);
 app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
 app.use('/users', usersRoutes);  // Usando as rotas de usuários
 app.use('/frete', freteRoutes);
