@@ -37,8 +37,7 @@ app.use(session({
 app.use('/uploads', express.static(path.join(__dirname, '/frontend/paginas/login/uploads')));
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auath/login', async (req, res) => {
     console.log("Recebendo requisição POST /api/auth/login");  // Adicione o log aqui
     const { email, password } = req.body;
 
