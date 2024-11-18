@@ -3,35 +3,41 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const camisasRoutes = require('./routes/camisasRoutes');
 const usersRoutes = require('./routes/usersRoutes');
-const freteRoutes = require('./routes/freteRoutes');
+const freteRoutes = require('./routes/freteRoutes'); 
 const comentarioRouter = require('./routes/comentarioRouter');
 const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 const session = require('express-session');
-const client = require('./config/database');
-const jwt = require('jsonwebtoken');
-const User = require('./models/authModel');
+const client = require('./config/database'); 
+const jwt = require('jsonwebtoken'); // Para criar o token JWT
+const User = require('./models/authModel'); // Modelo do banco de dados para o usuário
 const bcrypt = require('bcrypt');
 
 const app = express();
-
-app.use(cors()); // Permitir todos os domínios para testes
-
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
-// Middleware de sessão
+app.use('/api/auth', authRoutes); 
+app.use('/camisas', camisasRoutes);  // Usando as rotas de camisas
+app.use('/users', usersRoutes);  // Usando as rotas de usuários
+app.use('/frete', freteRoutes);
+app.use('/api/roupas', comentarioRouter);
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-    secret: 'seu-segredo',
-    resave: false,
-    saveUninitialized: false,
+    secret: 'seu-segredo',      // Chave secreta para assinatura do ID da sessão
+    resave: false,              // Impede que a sessão seja salva em cada requisição, mesmo sem alterações
+    saveUninitialized: false,   // Não salva sessões não modificadas
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24  // 1 dia
+        maxAge: 1000 * 60 * 60 * 24  // Sessão dura 1 dia (24 horas)
     }
 }));
 
-// Rota de login
+// Configuração de arquivos estáticos
+app.use('/uploads', express.static(path.join(__dirname, '/frontend/paginas/login/uploads')));
+app.use(express.static(path.join(__dirname, 'frontend')));
 app.post('/api/auth/login', async (req, res) => {
+    console.log("Recebendo requisição POST /api/auth/login");  // Adicione o log aqui
     const { email, password } = req.body;
 
     try {
@@ -62,13 +68,16 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// Outras rotas...
-app.use('/api/auth', authRoutes);
 
-// Servindo arquivos estáticos
+
+// Servir arquivos estáticos do frontend
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// Inicializando o servidor
+// Rota padrão para a página inicial
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/login.html')); // Redireciona para login.html
+});
+// Usar as rotas de autenticação
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
